@@ -54,6 +54,8 @@ func (p *Parser) parseStatement() ast.Statement {
 	switch p.curToken.Type {
 	case token.LET:
 		return p.parseLetStatement()
+	case token.RETURN:
+		return p.parseReturnStatement()
 	default:
 		return nil
 	}
@@ -71,6 +73,17 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 	if !p.expectPeek(token.ASSIGN) {
 		return nil
 	}
+
+	for !p.curTokenIs(token.SEMICOLON) {
+		p.nexToken()
+	}
+	return stmt
+}
+
+// faz o parse da declaracao let. no teste, pega-se o nome da variavel
+func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
+	stmt := &ast.ReturnStatement{Token: p.curToken}
+  p.nexToken()
 
 	for !p.curTokenIs(token.SEMICOLON) {
 		p.nexToken()
