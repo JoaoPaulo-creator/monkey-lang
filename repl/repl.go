@@ -6,6 +6,7 @@ import (
 	"io"
 	"joaopaulo-creator/monkey-lang/evaluator"
 	"joaopaulo-creator/monkey-lang/lexer"
+	"joaopaulo-creator/monkey-lang/object"
 	"joaopaulo-creator/monkey-lang/parser"
 	// "joaopaulo-creator/monkey-lang/object"
 )
@@ -14,7 +15,7 @@ const PROMPT = ">>"
 
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
-	//	env := object.NewEnvironment()
+	env := object.NewEnvironment()
 
 	for {
 		fmt.Fprintf(out, PROMPT)
@@ -33,7 +34,7 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		evaluated := evaluator.Eval(program)
+		evaluated := evaluator.Eval(program, env)
 		if evaluated != nil {
 			io.WriteString(out, evaluated.Inspect())
 			io.WriteString(out, "\n")
