@@ -9,8 +9,9 @@ const (
 	// identificadores e literals
 	IDENT = "IDENT"
 	INT   = "INT"
+	STRING = "STRING"
 
-	// operafores
+ // operafores
 	ASSIGN   = "="
 	PLUS     = "+"
 	MINUS    = "-"
