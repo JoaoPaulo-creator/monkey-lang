@@ -7,11 +7,11 @@ const (
 	EOF     = "EOF"     // end of file
 
 	// identificadores e literals
-	IDENT = "IDENT"
-	INT   = "INT"
+	IDENT  = "IDENT"
+	INT    = "INT"
 	STRING = "STRING"
 
- // operafores
+	// operafores
 	ASSIGN   = "="
 	PLUS     = "+"
 	MINUS    = "-"
@@ -37,11 +37,11 @@ const (
 	// keywords
 	FUNCTION = "FUNCTION"
 	LET      = "LET"
-	TRUE     = "true"
-	FALSE    = "false"
-	IF       = "if"
-	ELSE     = "else"
-	RETURN   = "return"
+	TRUE     = "TRUE"
+	FALSE    = "FALSE"
+	IF       = "IF"
+	ELSE     = "ELSE"
+	RETURN   = "RETURN"
 )
 
 type Token struct {

@@ -34,6 +34,14 @@ type Program struct {
 	Statements []Statement
 }
 
+func (p *Program) TokenLiteral() string {
+	if len(p.Statements) > 0 {
+		return p.Statements[0].TokenLiteral()
+	} else {
+		return ""
+	}
+}
+
 func (p *Program) String() string {
 	var out bytes.Buffer
 	for _, s := range p.Statements {
@@ -61,14 +69,6 @@ func (es *ExpressionStatement) String() string {
 }
 
 func (i *Identifier) String() string { return i.Value }
-
-func (p *Program) TokenLiteral() string {
-	if len(p.Statements) > 0 {
-		return p.Statements[0].TokenLiteral()
-	} else {
-		return ""
-	}
-}
 
 type ReturnStatement struct {
 	Token       token.Token
@@ -262,3 +262,25 @@ type StringLiteral struct {
 func (sl *StringLiteral) expressionNode()      {}
 func (sl *StringLiteral) TokenLiteral() string { return sl.Token.Literal }
 func (sl *StringLiteral) String() string       { return sl.Token.Literal }
+
+type ArrayLiteral struct {
+	Token    token.Token
+	Elements []Expression
+}
+
+func (al *ArrayLiteral) expressionNode()      {}
+func (al *ArrayLiteral) TokenLiteral() string { return al.Token.Literal }
+func (al *ArrayLiteral) String() string {
+	var out bytes.Buffer
+
+	elements := []string{}
+
+	for _, el := range al.Elements {
+		elements = append(elements, el.String())
+	}
+
+	out.WriteString("[")
+	out.WriteString(strings.Join(elements, ", "))
+	out.WriteString("]")
+	return out.String()
+}
