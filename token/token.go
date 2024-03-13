@@ -28,6 +28,7 @@ const (
 	// delimitadores
 	COMMA     = ","
 	SEMICOLON = ";"
+	COLON     = ":"
 
 	LPAREN   = "("
 	RPAREN   = ")"
