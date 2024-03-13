@@ -26,9 +26,6 @@ type ExpressionStatement struct {
 	Expression Expression
 }
 
-func (es *ExpressionStatement) statementNode()       {}
-func (es *ExpressionStatement) TokenLiteral() string { return es.Token.Literal }
-
 // Program eh o root de AST produzida pelo parser
 type Program struct {
 	Statements []Statement
@@ -49,6 +46,9 @@ func (p *Program) String() string {
 	}
 	return out.String()
 }
+
+func (es *ExpressionStatement) statementNode()       {}
+func (es *ExpressionStatement) TokenLiteral() string { return es.Token.Literal }
 
 func (rs *ReturnStatement) String() string {
 	var out bytes.Buffer
@@ -86,9 +86,9 @@ type LetStatement struct {
 
 func (ls *LetStatement) statementNode()       {}
 func (ls *LetStatement) TokenLiteral() string { return ls.Token.Literal }
-
 func (ls *LetStatement) String() string {
 	var out bytes.Buffer
+
 	out.WriteString(ls.TokenLiteral() + " ")
 	out.WriteString(ls.Name.String())
 	out.WriteString(" = ")
@@ -96,7 +96,7 @@ func (ls *LetStatement) String() string {
 	if ls.Value != nil {
 		out.WriteString(ls.Value.String())
 	}
-	out.WriteString(" ; ")
+	out.WriteString(";")
 	return out.String()
 }
 
