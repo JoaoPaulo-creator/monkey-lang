@@ -13,7 +13,8 @@ type VM struct {
 	constants    []object.Object
 	instructions code.Instructions
 	stack        []object.Object
-	sp           int
+	// provavelmente significa stack peek
+	sp int // isso aqui aponta para o topo da stack.
 }
 
 func New(bytecode *compiler.ByteCode) *VM {
