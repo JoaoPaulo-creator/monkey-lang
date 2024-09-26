@@ -16,12 +16,12 @@ const (
 	OpPop
 	OpTrue
 	OpFalse
-	OpEqual
-	OpNotEqual
-	OpdGreaterThan
 	OpSub
 	OpMul
 	OpDiv
+	OpEqual
+	OpNotEqual
+	OpdGreaterThan
 )
 
 type Definition struct {
