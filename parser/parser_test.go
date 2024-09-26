@@ -498,7 +498,7 @@ func TestOperatorPrecedenceParsing(t *testing.T) {
 	}
 }
 
-func TestBooleanExpression(t *testing.T) {
+func TestBooleanExpressions(t *testing.T) {
 	tests := []struct {
 		input           string
 		expectedBoolean bool
