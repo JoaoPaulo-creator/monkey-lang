@@ -32,6 +32,9 @@ type Definition struct {
 var definitions = map[Opcode]*Definition{
 	OpConstant:     {"OpConstant", []int{2}},
 	OpAdd:          {"OpAdd", []int{}},
+	OpSub:          {"OpSub", []int{}},
+	OpMul:          {"OpSub", []int{}},
+	OpDiv:          {"OpSub", []int{}},
 	OpPop:          {"OpPop", []int{}},
 	OpTrue:         {"OpTrue", []int{}},
 	OpFalse:        {"OpFalse", []int{}},
