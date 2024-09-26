@@ -16,8 +16,12 @@ type VM struct {
 	constants    []object.Object
 	instructions code.Instructions
 	stack        []object.Object
-	sp           int
+	// provavelmente significa stack peek
+	sp int // isso aqui aponta para o topo da stack.
 }
+
+var True = &object.Boolean{Value: true}
+var False = &object.Boolean{Value: false}
 
 func New(bytecode *compiler.ByteCode) *VM {
 	return &VM{
@@ -53,15 +57,23 @@ func (vm *VM) Run() error {
 				return err
 			}
 
-		case code.OpAdd:
-			right := vm.pop()
-			left := vm.pop()
+		case code.OpAdd, code.OpSub, code.OpMul, code.OpDiv:
+			err := vm.executeBinaryOperation(op)
+			if err != nil {
+				return err
+			}
 
-			leftValue := left.(*object.Integer).Value
-			rightValue := right.(*object.Integer).Value
+		case code.OpTrue:
+			err := vm.push(True)
+			if err != nil {
+				return err
+			}
 
-			result := leftValue + rightValue
-			vm.push(&object.Integer{Value: result})
+		case code.OpFalse:
+			err := vm.push(False)
+			if err != nil {
+				return err
+			}
 
 		case code.OpTrue:
 			err := vm.push(True)
@@ -98,4 +110,38 @@ func (vm *VM) pop() object.Object {
 	obj := vm.stack[vm.sp-1]
 	vm.sp--
 	return obj
+}
+
+func (vm *VM) executeBinaryOperation(op code.Opcode) error {
+	right := vm.pop()
+	left := vm.pop()
+
+	leftType := left.Type()
+	rightType := right.Type()
+
+	if leftType == object.INTEGER_OBJ && rightType == object.INTEGER_OBJ {
+		return vm.executeBinaryIntergerOperation(op, left, right)
+	}
+
+	return fmt.Errorf("unsupported types for binary operation: %s %s", leftType, rightType)
+}
+
+func (vm *VM) executeBinaryIntergerOperation(op code.Opcode, left, right object.Object) error {
+	leftValue := left.(*object.Integer).Value
+	rightValue := right.(*object.Integer).Value
+
+	var result int64
+
+	switch op {
+	case code.OpAdd:
+		result = leftValue + rightValue
+	case code.OpSub:
+		result = leftValue - rightValue
+	case code.OpMul:
+		result = leftValue * rightValue
+	case code.OpDiv:
+		result = leftValue / rightValue
+	}
+
+	return vm.push(&object.Integer{Value: result})
 }
