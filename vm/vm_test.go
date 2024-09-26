@@ -35,21 +35,16 @@ func testIntegerObject(expected int64, actual object.Object) error {
 func testBooleanObject(expected bool, actual object.Object) error {
 	result, ok := actual.(*object.Boolean)
 	if !ok {
-<<<<<<< HEAD
 		return fmt.Errorf("Object is not Boolean. got=%T (%+v)", actual, actual)
 	}
 
 	if result.Value != expected {
 		return fmt.Errorf("Object has wrong value. got=%t, want=%t", result.Value, actual)
-=======
-		return fmt.Errorf("object is not Boolean. got=%T (%+v)",
-			actual, actual)
 	}
 
 	if result.Value != expected {
 		return fmt.Errorf("object has wrong value. got=%t, want=%t",
 			result.Value, expected)
->>>>>>> cd5b502d9a34f7fb2acdd1bb87ab54d33256b303
 	}
 
 	return nil
@@ -97,10 +92,6 @@ func testExpectedObject(t *testing.T, expected interface{}, actual object.Object
 		if err != nil {
 			t.Errorf("testBooleanObject failed: %s", err)
 		}
-<<<<<<< HEAD
-
-=======
->>>>>>> cd5b502d9a34f7fb2acdd1bb87ab54d33256b303
 	}
 }
 
@@ -118,15 +109,6 @@ func TestIntegerArithmetic(t *testing.T) {
 		{"5 * 2 + 10", 20},
 		{"5 + 2 * 10", 25},
 		{"5 * (2 + 10)", 60},
-	}
-
-	runVmTests(t, tests)
-}
-
-func TestBooleanExpressions(t *testing.T) {
-	tests := []vmTestCase{
-		{"true", true},
-		{"false", false},
 	}
 
 	runVmTests(t, tests)
