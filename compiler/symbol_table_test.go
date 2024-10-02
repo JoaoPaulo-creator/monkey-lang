@@ -17,6 +17,7 @@ func TestDefine(t *testing.T) {
 		t.Errorf("expected b=%+v, got=%+v", expected["b"], b)
 	}
 }
+
 func TestResolveGlobal(t *testing.T) {
 	global := NewSymbolTable()
 	global.Define("a")
