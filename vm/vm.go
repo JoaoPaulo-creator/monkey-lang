@@ -81,27 +81,32 @@ func (vm *VM) Run() error {
 			if err != nil {
 				return nil
 			}
+
 		case code.OpEqual, code.OpNotEqual, code.OpGreaterThan:
 			err := vm.executeComparison(op)
 			if err != nil {
 				return err
 			}
+
 		case code.OpBang:
 			err := vm.executeBangOperator()
 			if err != nil {
 				return err
 			}
+
 		case code.OpMinus:
 			err := vm.executeMinusOperator()
 			if err != nil {
 				return err
 			}
+
 		case code.OpPop:
 			vm.pop()
 
 		case code.OpJump:
 			pos := int(code.ReadUint16(vm.instructions[ip+1:]))
 			ip = pos - 1
+
 		case code.OpJumpNotTruthy:
 			pos := int(code.ReadUint16(vm.instructions[ip+1:]))
 			ip += 2
@@ -109,10 +114,12 @@ func (vm *VM) Run() error {
 			if !isTruthy(condition) {
 				ip = pos - 1
 			}
+
 		case code.OpSetGlobal:
 			globalIndex := code.ReadUint16(vm.instructions[ip+1:])
 			ip += 2
 			vm.globals[globalIndex] = vm.pop()
+
 		case code.OpGetGlobal:
 			globalIndex := code.ReadUint16(vm.instructions[ip+1:])
 			ip += 2
@@ -120,8 +127,20 @@ func (vm *VM) Run() error {
 			if err != nil {
 				return err
 			}
+
 		case code.OpNull:
 			err := vm.push(Null)
+			if err != nil {
+				return err
+			}
+
+		case code.OpArray:
+			numElements := int(code.ReadUint16(vm.instructions[ip+1:]))
+			ip += 2
+			array := vm.buildArray(vm.sp-numElements, vm.sp)
+			vm.sp = vm.sp - numElements
+
+			err := vm.push(array)
 			if err != nil {
 				return err
 			}
@@ -257,6 +276,15 @@ func (vm *VM) executeMinusOperator() error {
 	value := operand.(*object.Integer).Value
 	return vm.push(&object.Integer{Value: -value})
 
+}
+
+func (vm *VM) buildArray(startIndex, endIndex int) object.Object {
+	elements := make([]object.Object, endIndex-startIndex)
+	for i := startIndex; i < endIndex; i++ {
+		elements[i-startIndex] = vm.stack[i]
+	}
+
+	return &object.Array{Elements: elements}
 }
 
 func nativeBoolToBooleanObject(input bool) *object.Boolean {
