@@ -37,6 +37,7 @@ type Builtin struct {
 
 type CompiledFunction struct {
 	Instructions code.Instructions
+	NumLocals    int
 }
 
 type Integer struct {
