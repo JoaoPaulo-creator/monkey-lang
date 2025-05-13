@@ -107,7 +107,6 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.LT, p.parseInfixExpression)
 	p.registerInfix(token.GT, p.parseInfixExpression)
 	p.registerInfix(token.LBRACKET, p.parseIndexExpression)
-
 	p.registerInfix(token.LPAREN, p.parseCallExpression)
 
 	p.nextToken()
@@ -326,7 +325,6 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 	p.nextToken()
 
 	stmt.Value = p.parseExpression(LOWEST)
-
 	if p.peekTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
